@@ -18,7 +18,6 @@ void option1();
 void option2();
 //Option 3 - Animal Guessing Game
 void option3();
-bool animalGuessedRecursion(char choice, string fileInput);
 
 //Precondition : N/A
 //Posctondition: Calls option 1, 2, and 3
@@ -175,22 +174,6 @@ char menuOption3()
 }
 void option3()
 {
-    char choice = 'N';
-    string animal = "";
-    string animalQuestion = "";
-    string vowelsString = "aeiouAEIOU";
-    bool vowels = false;
-    ifstream inputFile;
-    ofstream outputFile;
-
-    inputFile.open("animal.txt");
-
-    if (inputFile.fail())
-    {
-        cout << "\n\tFile animal.txt cannot be found.\n";
-        return;
-    }
-
     cout << "\n\t3> Animal Guessing Game";
     cout << "\n\t" << string(100, char(205));
     cout << "\n\tA game tree for a simple game of \"animal\" twenty questions would look like:\n";
@@ -211,93 +194,9 @@ void option3()
         switch (menuOption3())
         {
         case '0': cout << "\n\tThank you for teaching AI a thing or two.\n"; return;
-        case 'A':
-        {
-            system("cls");
-            cout << "\n\tThink of an animal and press the RETURN/ENTER key to begin...";
-            cin.clear();
-            cin.ignore(999, '\n');
-
-            if (animalGuessedRecursion == 0) //True
-            {
-                cout << "\n\tYes, I knew it all along!\n";
-                system("cls");
-                break;
-            }
-            else //Enter question
-            {
-                cout << "\n\tI give up. What are you?";
-                animal = inputString("\n\t", true);
-
-                cout << "\n\tPlease specify a yes/no question that will distinguish a " << animal << " from a lion.";
-
-                cout << "\n\tEnter your question in this format: (Does it have " << string(5, char(95)) << "?: ";
-                animalQuestion = inputString("\n\t", true);
-
-                for (int i = 0; i < vowelsString.size(); i++)
-                {
-                    if (animal[0] == vowelsString[i])
-                    {
-                        vowels = true;
-                        break;
-                    }
-                }
-
-                if (vowels == true)
-                {
-                    cout << "\n\tAs an " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
-                }
-                else
-                {
-                    cout << "\n\tAs a " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
-                }
-            }
-
-            system("cls");
-        }break;
-        case 'B':
-        {
-            cout << "\n\tNew data file. animal.txt, has been saved.\n";
-        }break;
+        case 'A': break;
+        case 'B': break;
         default: "\t\tERROR: - Invalid option. Please re-enter"; break;
         }
-        
-    /*Think of an animal and press the RETURN/ENTER key to begin...
-
-
-                Is it a mammal? (Y-yes or N-no) y
-
-                Does it have stripes? (Y-yes or N-no) n
-
-                Does it have a pouch? (Y-yes or N-no) n
-
-                My guess is a lion (Y-yes or N-no)? n
-
-                ///
-
-                Yes, I knew it all along!
-
-                ///
-
-                I give up. What are you?
-                dolphin
-
-                Please specify a yes/no question that will distinguish a dolphin from a lion.
-
-                Enter your question that ends with a '?':
-                Does it have flippers?
-                As a dolphin, does it Does it have flippers? (Y-yes or N-no)
-
-                New data file. animal.txt, has been saved.
-    */
     } while (true);
-}
-
-bool animalGuessedRecursion(char choice, string fileInput)
-{
-    if (!fileInput.empty())
-    {
-        choice = inputChar("\n\tIs it a mammal? (Y-yes or N-no) ", static_cast<string>("YN"));
-        return true;
-    }
 }
