@@ -187,7 +187,7 @@ void option3()
 
     if (inputFile.fail())
     {
-        cout << "\n\tFile animal.txt cannot be found.\n";
+        cout << "\n\tERROR: File animal.txt cannot be found.\n";
         return;
     }
 
