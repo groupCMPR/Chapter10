@@ -1,9 +1,8 @@
-//Names: Alexis Martinez, Angie Campos, Daniel Hernandex, Neidy Malaga, & Vivian Huynh
+//Names: Alexis Martinez, Angie Campos, Daniel Hernandex, John Kim, Neidy Malaga, & Vivian Huynh
 //Date: 11/5/2023
 //Description: Chapter 10 Assignment - Trees
 
 #include <iostream> //For cout
-#include <fstream>  //For files
 
 //HEADER FILE
 #include "input.h"  //For input validation
@@ -16,7 +15,7 @@ int menuOption();
 void option1();
 //Option 2 - Tree container of integers
 void option2();
-//Option 3 - Animal Guessing Game
+//Option 3 - Animal Guessing Game 
 void option3();
 
 //Precondition : N/A
