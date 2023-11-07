@@ -11,11 +11,11 @@ using namespace std;
 //PROTOTYPES
 int menuOption();
 
-//Option 1 - Tree of strings
+//Option 1 - Tree of strings (Angie, Daniel)
 void option1();
-//Option 2 - Tree container of integers
+//Option 2 - Tree container of integers (Alexis, John)
 void option2();
-//Option 3 - Animal Guessing Game 
+//Option 3 - Animal Guessing Game (Vivian, Neidy)
 void option3();
 
 //Precondition : N/A
