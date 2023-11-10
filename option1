@@ -30,18 +30,37 @@ int main()
     // print tree structure after growing branches
     print_tree<string>("\t\t", root, false, true, true);
 
-    // branches grow leaves
+    // branches grow leaves.
     cout << "\n\tC> Branches grow leaves.";
-    cout << "\n\t\tLeft branch of (branch #1) grows two leaves: leaf #1 and leaf #2.\n";
 
+    //creating the initial tree
     binary_tree_node<string>* leaf1 = new binary_tree_node<string>("leaf #1");
     binary_tree_node<string>* leaf2 = new binary_tree_node<string>("leaf #2");
+    binary_tree_node<string>* leaf3 = new binary_tree_node<string>("leaf #3");
+    binary_tree_node<string>* leaf4 = new binary_tree_node<string>("leaf #4");
 
     branch1->setLeft(leaf1);
-    branch1->setRight(leaf2);
+    branch2->setLeft(leaf2);
 
-    // print tree structure after growing leaves on the left branch
+    cout << "\n\t\tLeft branch of (branch #1) grows two leaves: leaf #1 and leaf #2.\n\n";
+    // print tree structure before deletion
     print_tree<string>("\t\t", root, false, true, true);
+
+    // replace leaf2 with leaf3 in the right branch of branch #2
+    branch2->setLeft(leaf3);
+    branch2->setRight(leaf4);
+
+    // delete the old leaf2
+    delete leaf2;
+
+    cout << "\n\t\tRight branch of (branch #1) grows two leaves: leaf #1 and leaf #2.\n\n";
+    // print tree structure after deletion
+    print_tree<string>("\t\t", root, false, true, true);
+
+
+
+
+
 
     // left leaf sprouts and yields a fruit
     cout << "\n\tD>. Left leaf sprouts and yields a fruit (apple).\n";
@@ -58,11 +77,22 @@ int main()
     binary_tree_node<string>* orangeNode = new binary_tree_node<string>("orange");
     binary_tree_node<string>* coconutNode = new binary_tree_node<string>("coconut");
 
-    leaf2->setLeft(orangeNode);
-    leaf2->setRight(coconutNode);
+    // assuming branch2 is the right branch and leaf3 is the left leaf
+    branch2->setLeft(new binary_tree_node<string>("leaf #3", orangeNode));
+
+    // set coconutNode as the right child of leaf3
+    orangeNode->setRight(coconutNode);
+
+    // set leaf4 as the right child of branch2
+    branch2->setRight(new binary_tree_node<string>("leaf #4"));
 
     // print tree structure after growing orange and coconut on the right leaf
-    print_tree<string>("\t\t", root, false, true, true);
+    print_tree<string>("\t\t", root, false, false, true);
+
+
+
+
+
 
     // delete tree
     cout << "\n\tF> Delete tree.\n";
