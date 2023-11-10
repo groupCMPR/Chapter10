@@ -7,54 +7,57 @@
 
 //HEADER FILE
 #include "input.h"  //For input validation
+#include "binary_tree_node.cpp"
 using namespace std;
 
 //PROTOTYPES
 int menuOption();
 
-//Option 1 - Tree of strings
+//Option 1 - Tree of strings (Angie, Daniel)
 void option1();
-//Option 2 - Tree container of integers
+//Option 2 - Tree container of integers (Alexis, John)
 void option2();
-//Option 3 - Animal Guessing Game (Vivian)
+//Option 3 - Animal Guessing Game (Vivian, Neidy)
 void option3();
-bool animalGuessedRecursion(char choice, string fileInput);
+void beginning_tree(binary_tree_node<string>*& node, fstream& inputFile);
+void readFileAnimalGuesses(binary_tree_node<string>*& node, fstream& inputFile);
+//bool animalGuessedRecursion(char choice, string fileInput);
 
 //Precondition : N/A
 //Posctondition: Calls option 1, 2, and 3
 int main()
 {
-	do
-	{
-		system("cls");
-		switch (menuOption())
-		{
-		case 0: exit(0);
-		case 1: system("cls"); option1(); break;
-		case 2: system("cls"); option2(); break;
-		case 3: system("cls"); option3(); break;
-		default: cout << "\t\tERROR: - Invalid option. Please re-enter"; break;
-		}
-		cout << "\n";
-		system("pause");
-	} while (true);
-	return 0;
+    do
+    {
+        system("cls");
+        switch (menuOption())
+        {
+        case 0: exit(0);
+        case 1: system("cls"); option1(); break;
+        case 2: system("cls"); option2(); break;
+        case 3: system("cls"); option3(); break;
+        default: cout << "\t\tERROR: - Invalid option. Please re-enter"; break;
+        }
+        cout << "\n";
+        system("pause");
+    } while (true);
+    return 0;
 }
 
 //Precondition : Calls from main
 //Posctondition: Returns integer choice
 int menuOption()
 {
-	cout << "\n\tCMPR131 Chapter 10: Trees (Final Group 11)";
-	cout << "\n\t" << string(100, char(205));
-	cout << "\n\t\t1> Tree of strings";
-	cout << "\n\t\t2> Tree container of integers";
-	cout << "\n\t\t3> Animal Guessing Game";
-	cout << "\n\t" << string(100, char(196));
-	cout << "\n\t\t0> Exit";
-	cout << "\n\t" << string(100, char(205));
+    cout << "\n\tCMPR131 Chapter 10: Trees (Final Group 11)";
+    cout << "\n\t" << string(100, char(205));
+    cout << "\n\t\t1> Tree of strings";
+    cout << "\n\t\t2> Tree container of integers";
+    cout << "\n\t\t3> Animal Guessing Game";
+    cout << "\n\t" << string(100, char(196));
+    cout << "\n\t\t0> Exit";
+    cout << "\n\t" << string(100, char(205));
 
-	return inputInteger("\n\t\tOption: ", 0, 3);
+    return inputInteger("\n\t\tOption: ", 0, 3);
 }
 
 void menuOption1()
@@ -119,7 +122,7 @@ void menuOption1()
 void option1()
 {
     cout << "\n\t1> Tree of strings";
-	cout << "\n\t" << string(100, char(205));
+    cout << "\n\t" << string(100, char(205));
     menuOption1();
 }
 
@@ -175,21 +178,27 @@ char menuOption3()
 }
 void option3()
 {
+    binary_tree_node<string>* animalGuessGame;
     char choice = 'N';
     string animal = "";
     string animalQuestion = "";
     string vowelsString = "aeiouAEIOU";
     bool vowels = false;
-    ifstream inputFile;
-    ofstream outputFile;
+    fstream inputFile;
 
     inputFile.open("animal.txt");
 
     if (inputFile.fail())
     {
-        cout << "\n\tERROR: File animal.txt cannot be found.\n";
+        cout << "\n\tFile animal.txt cannot be found.\n";
         return;
     }
+    readFileAnimalGuesses(animalGuessGame, inputFile);
+    cout << "\n\t" << animalGuessGame->getData();
+    cout << "\n\t" << animalGuessGame->getLeft()->getData();
+    cout << "\n\t" << animalGuessGame->getRight()->getData();
+    print_tree<string>("\t\t", animalGuessGame, false, true, true);
+
 
     cout << "\n\t3> Animal Guessing Game";
     cout << "\n\t" << string(100, char(205));
@@ -218,42 +227,40 @@ void option3()
             cin.clear();
             cin.ignore(999, '\n');
 
-            if (animalGuessedRecursion == 0) //True
-            {
-                cout << "\n\tYes, I knew it all along!\n";
-                system("cls");
-                break;
-            }
-            else //Enter question
-            {
-                cout << "\n\tI give up. What are you?";
-                animal = inputString("\n\t", true);
+            //if (animalGuessedRecursion == 0) //True
+            //{
+            //    cout << "\n\tYes, I knew it all along!\n";
+            //    break;
+            //}
+            //else //Enter question
+            //{
+            //    cout << "\n\tI give up. What are you?";
+            //    animal = inputString("\n\t", true);
 
-                cout << "\n\tPlease specify a yes/no question that will distinguish a " << animal << " from a lion.";
+            //    cout << "\n\tPlease specify a yes/no question that will distinguish a " << animal << " from a " << ".";
 
-                cout << "\n\tEnter your question in this format: (Does it have " << string(5, char(95)) << "?: ";
-                animalQuestion = inputString("\n\t", true);
+            //    cout << "\n\tEnter your animal in a question format. Ex: Does it...? Is it...?";
+            //    animalQuestion = inputString("\n\t", true);
 
-                for (int i = 0; i < vowelsString.size(); i++)
-                {
-                    if (animal[0] == vowelsString[i])
-                    {
-                        vowels = true;
-                        break;
-                    }
-                }
+            //    for (int i = 0; i < vowelsString.size(); i++)
+            //    {
+            //        if (animal[0] == vowelsString[i])
+            //        {
+            //            vowels = true;
+            //            break;
+            //        }
+            //    }
 
-                if (vowels == true)
-                {
-                    cout << "\n\tAs an " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
-                }
-                else
-                {
-                    cout << "\n\tAs a " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
-                }
-            }
+            //    if (vowels == true)
+            //    {
+            //        cout << "\n\tAs an " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
+            //    }
+            //    else
+            //    {
+            //        cout << "\n\tAs a " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
+            //    }
+            //}
 
-            system("cls");
         }break;
         case 'B':
         {
@@ -261,43 +268,234 @@ void option3()
         }break;
         default: "\t\tERROR: - Invalid option. Please re-enter"; break;
         }
-        
-    /*Think of an animal and press the RETURN/ENTER key to begin...
+        system("pause");
+        cout << "\n";
+        system("cls");
+
+        /*Think of an animal and press the RETURN/ENTER key to begin...
 
 
-                Is it a mammal? (Y-yes or N-no) y
+               Is it a mammal? (Y-yes or N-no) y
 
-                Does it have stripes? (Y-yes or N-no) n
+               Does it have stripes? (Y-yes or N-no) n
 
-                Does it have a pouch? (Y-yes or N-no) n
+               Does it have a pouch? (Y-yes or N-no) n
 
-                My guess is a lion (Y-yes or N-no)? n
+               My guess is a lion (Y-yes or N-no)? n
 
-                ///
+               ///
 
-                Yes, I knew it all along!
+               Yes, I knew it all along!
 
-                ///
+               ///
 
-                I give up. What are you?
-                dolphin
+               I give up. What are you?
+               dolphin
 
-                Please specify a yes/no question that will distinguish a dolphin from a lion.
+               Please specify a yes/no question that will distinguish a dolphin from a lion.
 
-                Enter your question that ends with a '?':
-                Does it have flippers?
-                As a dolphin, does it Does it have flippers? (Y-yes or N-no)
+               Enter your question that ends with a '?':
+               Does it have flippers?
+               As a dolphin, does it Does it have flippers? (Y-yes or N-no)
 
-                New data file. animal.txt, has been saved.
-    */
+               New data file. animal.txt, has been saved.
+   */
     } while (true);
 }
 
-bool animalGuessedRecursion(char choice, string fileInput)
+void beginning_tree(binary_tree_node<string>*& node, fstream& inputFile)
 {
-    if (!fileInput.empty())
+    string line;
+    binary_tree_node<string>* left_child_ptr = new binary_tree_node<string>;
+    binary_tree_node<string>* right_child_ptr = new binary_tree_node<string>;
+    if (!inputFile.eof())
     {
-        choice = inputChar("\n\tIs it a mammal? (Y-yes or N-no) ", static_cast<string>("YN"));
-        return true;
+        getline(inputFile, line);
+        node = new binary_tree_node<string>;
+        node->setData(line);
+        node->setLeft(left_child_ptr);
+        node->setRight(right_child_ptr);
     }
 }
+
+void readFileAnimalGuesses(binary_tree_node<string>*& node, fstream& inputFile)
+{
+    string line;
+    node = new binary_tree_node<string>;
+    binary_tree_node<string>* left_child_ptr = new binary_tree_node<string>;
+    binary_tree_node<string>* right_child_ptr = new binary_tree_node<string>;
+    bool root = true;
+
+    if (root = true)
+    {
+        beginning_tree(node, inputFile);
+        root = false;
+    }
+    if (!inputFile.eof())
+    {
+        getline(inputFile, line);
+        left_child_ptr->setData(line);
+        node->setLeft(left_child_ptr);
+        getline(inputFile, line);
+        right_child_ptr->setData(line);
+        node->setRight(right_child_ptr);
+        readFileAnimalGuesses(left_child_ptr, inputFile);
+        readFileAnimalGuesses(right_child_ptr, inputFile);
+  /*      getline(inputFile, line);
+        node->setData(line);
+        getline(inputFile, line);
+        left_child_ptr->setData(line);
+        node->setLeft(left_child_ptr);
+        getline(inputFile, line);
+        right_child_ptr->setData(line);
+        node->setRight(right_child_ptr);
+        readFileAnimalGuesses(left_child_ptr, inputFile);
+        readFileAnimalGuesses(right_child_ptr, inputFile);*/
+    }
+
+    /*string line = "";
+    string questionOrAnswer = "";
+    int count = 0;
+    bool roots = true;
+    bool left_subtree_finished = false;
+    binary_tree_node<string>* root_ptr = new binary_tree_node<string>;
+    binary_tree_node<string>* left_child_ptr = new binary_tree_node<string>;
+    binary_tree_node<string>* right_child_ptr = new binary_tree_node<string>;
+
+    if (!inputFile.eof())
+    {
+        getline(inputFile, line);
+        cin.clear();
+    }
+    else
+        return;
+
+    if (roots == true)
+    {
+        for (int i = 0; i < line.size(); i++)
+        {
+            if (line[i] == '[' || line[i] == ']')
+                continue;
+            questionOrAnswer += line[i];
+        }
+        root_ptr->setData(questionOrAnswer);
+        questionOrAnswer = "";
+        left_child_ptr->setData(NULL);
+        right_child_ptr->setData(NULL);
+        root_ptr->setLeft(left_child_ptr);
+        root_ptr->setRight(right_child_ptr);
+        roots = false;
+    }
+
+    if (!inputFile.eof())
+    {
+        getline(inputFile, line);
+        cin.clear();
+
+        if (line[0] == '[')
+        {
+            for (int i = 0; i < line.size(); i++)
+            {
+                if (line[i] == '[' || line[i] == ']')
+                    continue;
+                questionOrAnswer += line[i];
+            }
+            left_child_ptr->setData(questionOrAnswer);
+            questionOrAnswer = "";
+        }
+    }
+    else
+        return;*/
+
+        /*if (line[0] == '[')
+        {
+            node = new binary_tree_node<string>;
+            node->setData(line);
+            readFileAnimalGuesses(left_child_ptr, inputFile);
+        }
+        if (line[0] == '(')
+        {
+            node = new binary_tree_node<string>;
+            node->setData(line);
+            readFileAnimalGuesses(right_child_ptr, inputFile);
+        }*/
+
+        /*getline(inputFile, line);
+
+        for (int i = 0; i < line.size(); i++)
+        {
+            if (line[i] == '[' || line[i] == ']')
+                continue;
+            questionOrAnswer += line[i];
+        }
+        root_ptr->setData(questionOrAnswer);
+
+        getline(inputFile, line);
+        if(!inputFile.eof())
+        {
+            if (line[0] == '[')
+            {
+                for (int i = 0; i < line.size(); i++)
+                {
+                    if (line[i] == '[' || line[i] == ']')
+                        continue;
+                    questionOrAnswer += line[i];
+                }
+                left_child_ptr->setData(line);
+                root_ptr->setLeft(left_child_ptr);
+                readFileAnimalGuesses(inputFile);
+            }
+            else if (line[0] == '(')
+            {
+                for (int i = 0; i < line.size(); i++)
+                {
+                    if (line[i] == '(' || line[i] == ')')
+                        continue;
+                    questionOrAnswer += line[i];
+                }
+                right_child_ptr->setData(line);
+                root_ptr->setLeft(right_child_ptr);
+                readFileAnimalGuesses(inputFile);
+            }
+        }*/
+
+        /*for (int i = 0; i < line.size(); i++)
+        {
+            if (line[i] == '[' || line[i] == ']')
+                continue;
+            questionOrAnswer += line[i];
+        }
+        root_ptr->setData(questionOrAnswer);
+        root_ptr->setLeft(NULL);
+        root_ptr->setRight(NULL);
+
+        while (!inputFile.eof())
+        {
+
+        }*/
+
+        //while (!inputFile.eof())
+        //{
+        //    getline(inputFile, line);
+
+        //    if (line[0] == '[')
+        //    {
+        //        for (int i = 0; i < line.size(); i++)
+        //        {
+        //            if (line[i] == '[' || line[i] == ']')
+        //                continue;
+        //            questionOrAnswer += line[i];
+        //        }
+        //        root_ptr->setData(questionOrAnswer);
+        //    }
+        //}
+}
+
+//bool animalGuessedRecursion(char choice, string fileInput)
+//{
+//    if (!fileInput.empty())
+//    {
+//        choice = inputChar("\n\tIs it a mammal? (Y-yes or N-no) ", static_cast<string>("YN"));
+//        return true;
+//    }
+//}
