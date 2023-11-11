@@ -198,8 +198,6 @@ void option3()
 {
     string line = ""; //line to store first sentence
 
-
-    return;
     ifstream inputFile("animal.txt"); //open file
 
     //error checks for failing open, empty file
@@ -277,51 +275,6 @@ void option3()
 // those two leaves belong to that branch
 // Also if you have one leaf, it will assume it is left (Yes)
 //postcondition: sets up the file binary tree
-//void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
-//    string line;
-//
-//    //only continues if file has a line, acts as a stop case
-//    if (getline(inputFile, line)) {
-//
-//        //puts line into a node
-//        binary_tree_node<string>* left_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
-//
-//        //if it is a branch, sets as left node first, then recurses to set the 
-//        //following left branches
-//        //when it returns it will set up the right branch if available
-//        if (line[0] == '[') {
-//            node->setLeft(left_node);
-//            set_Tree(inputFile, left_node);
-//            if (getline(inputFile, line) && node->getRight() == NULL) {
-//                binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
-//                node->setRight(right_node);
-//
-//                // set_Tree(inputFile, right_node);
-//            }
-//            return; 
-//        }
-//
-//        //if leaf will set to a left leaf, if another leaf is there also sets as right leaf
-//        //if there is a branch instead of a right leaf, skips setting it and returns it to orignial position
-//        //as it will be returned to be set into right branch 
-//        if (line[0] == '(') {
-//            node->setLeft(left_node);
-//
-//            if (getline(inputFile, line) ){//&& line[0] == '(') {
-//                binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
-//                node->setRight(right_node);
-//
-//                if (line[0] == '[')
-//                    set_Tree(inputFile, right_node);
-//            }
-//
-//           // return;
-//        }
-//            
-//    }
-//}
-
-
 void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
     string line;
 
@@ -341,7 +294,8 @@ void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
                 binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
                 node->setRight(right_node);
 
-                // set_Tree(inputFile, right_node);
+                if(line[0] == '[')
+                  set_Tree(inputFile, right_node);
             }
             return;
         }
@@ -360,7 +314,6 @@ void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
                     set_Tree(inputFile, right_node);
             }
 
-            // return;
         }
 
     }
