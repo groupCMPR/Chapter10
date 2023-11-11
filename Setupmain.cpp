@@ -5,7 +5,8 @@
 #include <iostream> //For cout
 
 //HEADER FILE
-#include "input.h"  //For input validation
+#include "input.h"              //For input validation
+#include "binary_tree_node.cpp" //For options 1, 2, 3
 using namespace std;
 
 //PROTOTYPES
