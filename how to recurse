@@ -221,10 +221,6 @@ void option3()
  
     inputFile.close();
 
-    print_tree("", root, false, true, true);
-    delete_tree(root); //deletes file
-
-    return;
     cout << "\n\t3> Animal Guessing Game";
     cout << "\n\t" << string(100, char(205));
     cout << "\n\tA game tree for a simple game of \"animal\" twenty questions would look like:\n";
@@ -265,15 +261,14 @@ void option3()
         default: "\t\tERROR: - Invalid option. Please re-enter"; break;
         }
     } while (true);
-    
 
-    delete_tree(root); //deletes file
+    delete_tree(root); //deletes tree 
 }
 
 //precondition: A full/complete binary tree set up in a text file (for best organization), the root node
 // Be aware of your () leaves as if there are two leaves under a branch, set_Tree will assume 
 // those two leaves belong to that branch
-// Also if you have one leaf, it will assume it is left (Yes)
+// Also if you have one leaf, it will automatically assume it is left (Yes)
 //postcondition: sets up the file binary tree
 void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
     string line;
@@ -290,10 +285,11 @@ void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
         if (line[0] == '[') {
             node->setLeft(left_node);
             set_Tree(inputFile, left_node);
-            if (getline(inputFile, line) && node->getRight() == NULL) {
+            if (getline(inputFile, line)) {
                 binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
                 node->setRight(right_node);
 
+                //if node is a branch, recurses to get leaves 
                 if(line[0] == '[')
                   set_Tree(inputFile, right_node);
             }
@@ -310,6 +306,7 @@ void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
                 binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
                 node->setRight(right_node);
 
+                //if node is a branch, recurses to get leaves 
                 if (line[0] == '[')
                     set_Tree(inputFile, right_node);
             }
