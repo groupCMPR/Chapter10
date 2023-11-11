@@ -6,7 +6,7 @@
 
 //HEADER FILE
 #include "input.h"              //For input validation
-#include "binary_tree_node.cpp" //For options 1, 2, 3
+#include "binary_tree_node.h"
 using namespace std;
 
 //PROTOTYPES
@@ -18,6 +18,9 @@ void option1();
 void option2();
 //Option 3 - Animal Guessing Game (Vivian, Neidy)
 void option3();
+void set_Tree(ifstream&, binary_tree_node<string>*);
+void animalGuessedRecursion(binary_tree_node<string>*);
+void save_File(ofstream&, binary_tree_node<string>*);
 
 //Precondition : N/A
 //Posctondition: Calls option 1, 2, and 3
