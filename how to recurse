@@ -19,9 +19,9 @@ void option1();
 void option2();
 //Option 3 - Animal Guessing Game (Vivian)
 void option3();
-//void set_Tree(ifstream& inputFile, binary_tree_node<string>& animal_tree);
-void animalGuessedRecursion(binary_tree_node<string>* prev_node);
-void set_Tree(ifstream& inputFile, binary_tree_node<string>*& animal_tree);
+void set_Tree(ifstream&, binary_tree_node<string>*);
+void animalGuessedRecursion(binary_tree_node<string>*);
+void save_File(ofstream&, binary_tree_node<string>*);
 
 //Precondition : N/A
 //Posctondition: Calls option 1, 2, and 3
@@ -176,160 +176,275 @@ char menuOption3()
 
     return inputChar("\n\t\tOption: ", static_cast<string>("0AB"));
 }
+
+void save_File(binary_tree_node<string>* prev_node) {
+
+    if (prev_node->isLeaf())
+        cout << "\n\t(" << prev_node->getData() << ")";
+    else
+        cout << "\n\t[" << prev_node->getData() << "]";
+
+    if (prev_node->getLeft() != NULL) {
+        save_File(prev_node->getLeft());
+        if(prev_node->getRight() != NULL)
+            save_File(prev_node->getRight());
+    }
+
+    return;
+
+}
+
 void option3()
 {
-    char choice = 'N';
-    bool vowels = false;
-    string line = "";
+    string line = ""; //line to store first sentence
 
-    ifstream inputFile("animal.txt");
-  //  ofstream outputFile;
 
-    //error checks
+    return;
+    ifstream inputFile("animal.txt"); //open file
+
+    //error checks for failing open, empty file
     if (inputFile.fail())
     {
         cout << "\n\tERROR: File animal.txt cannot be found.\n";
         return;
     }
-
     if (inputFile.peek() == fstream::traits_type::eof()) {
         cout << "\n\tERROR: File is empty";
         return;
     }
 
+    //get root using first line
     getline(inputFile, line);
     binary_tree_node<string>* root = new binary_tree_node<string>(line.substr(1, line.size() - 2));
     binary_tree_node<string> animal_tree(*root);
 
+    //sets the file tree
     set_Tree(inputFile, root);
-   
+ 
     inputFile.close();
 
-    //print_tree("", root, false, true, true);
+    print_tree("", root, false, true, true);
+    delete_tree(root); //deletes file
 
+    return;
+    cout << "\n\t3> Animal Guessing Game";
+    cout << "\n\t" << string(100, char(205));
+    cout << "\n\tA game tree for a simple game of \"animal\" twenty questions would look like:\n";
+    cout << "\n\t\t\t\t\t[ Is it a mammal? ]";
+    cout << "\n\t\t\t\t\t    /         " << char(92);
+    cout << "\n\t\t\t\t\t   /           " << char(92);
+    cout << "\n\t\t\t[ Does it have stripes? ]     [ Is it a bird? ]";
+    cout << "\n\t\t\t      /       " << char(92) << "                  /       " << char(92);
+    cout << "\n\t\t\t     /         " << char(92) << "                /         " << char(92);
+    cout << "\n\t\t\t( Zebra )    ( Lion )   [ Does it fly? ]  ( Gila monster )";
+    cout << "\n\t\t\t\t\t\t    /       " << char(92);
+    cout << "\n\t\t\t\t\t\t   /         " << char(92);
+    cout << "\n\t\t\t\t\t   ( Eagle )     ( Penguin )\n";
+    cout << "\n\tA learning version of twenty questions: one that not only plays the game, but learns new";
+    cout << "\n\tobjects when it loses.\n";
+
+    do
     {
-        cout << "\n\t3> Animal Guessing Game";
-        cout << "\n\t" << string(100, char(205));
-        cout << "\n\tA game tree for a simple game of \"animal\" twenty questions would look like:\n";
-        cout << "\n\t\t\t\t\t[ Is it a mammal? ]";
-        cout << "\n\t\t\t\t\t    /         " << char(92);
-        cout << "\n\t\t\t\t\t   /           " << char(92);
-        cout << "\n\t\t\t[ Does it have stripes? ]     [ Is it a bird? ]";
-        cout << "\n\t\t\t      /       " << char(92) << "                  /       " << char(92);
-        cout << "\n\t\t\t     /         " << char(92) << "                /         " << char(92);
-        cout << "\n\t\t\t( Zebra )    ( Lion )   [ Does it fly? ]  ( Gila monster )";
-        cout << "\n\t\t\t\t\t\t    /       " << char(92);
-        cout << "\n\t\t\t\t\t\t   /         " << char(92);
-        cout << "\n\t\t\t\t\t   ( Eagle )     ( Penguin )\n";
-        cout << "\n\tA learning version of twenty questions: one that not only plays the game, but learns new";
-        cout << "\n\tobjects when it loses.\n";
-
-        do
+        switch (menuOption3())
         {
-            switch (menuOption3())
-            {
-            case '0': cout << "\n\tThank you for teaching AI a thing or two.\n"; return;
-            case 'A':
-            {
-                cout << "\n\tThink of an animal and press the RETURN/ENTER key to begin...";
-                cin.get();
-                animalGuessedRecursion(root);
-                system("pause");
-                system("cls");
-            }break;
-            case 'B':
-            {
-                //dont delete tree!!!!!!!!
-                cout << "\n\tNew data file. animal.txt, has been saved.\n";
-            }break;
-            default: "\t\tERROR: - Invalid option. Please re-enter"; break;
-            }
-        } while (true);
-    }
 
-    delete_tree(root); //keep even if you save file
+        case '0': cout << "\n\tThank you for teaching AI a thing or two.\n"; return;
+        case 'A':
+        {
+            cout << "\n\tThink of an animal and press the RETURN/ENTER key to begin...";
+            cin.get(); //for system pause
+            animalGuessedRecursion(root);
+            system("pause");
+            system("cls");
+        }break;
+        case 'B':
+        {
+            ofstream outputFile("animal.txt");
+            save_File(outputFile, root);
+            outputFile.close();
+            cout << "\n\tNew data file. animal.txt, has been saved.\n";
+        }break;
+        default: "\t\tERROR: - Invalid option. Please re-enter"; break;
+        }
+    } while (true);
+    
+
+    delete_tree(root); //deletes file
 }
 
-void set_Tree(ifstream& inputFile, binary_tree_node<string>*& prev_node) {
+//precondition: A full/complete binary tree set up in a text file (for best organization), the root node
+// Be aware of your () leaves as if there are two leaves under a branch, set_Tree will assume 
+// those two leaves belong to that branch
+// Also if you have one leaf, it will assume it is left (Yes)
+//postcondition: sets up the file binary tree
+//void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
+//    string line;
+//
+//    //only continues if file has a line, acts as a stop case
+//    if (getline(inputFile, line)) {
+//
+//        //puts line into a node
+//        binary_tree_node<string>* left_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
+//
+//        //if it is a branch, sets as left node first, then recurses to set the 
+//        //following left branches
+//        //when it returns it will set up the right branch if available
+//        if (line[0] == '[') {
+//            node->setLeft(left_node);
+//            set_Tree(inputFile, left_node);
+//            if (getline(inputFile, line) && node->getRight() == NULL) {
+//                binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
+//                node->setRight(right_node);
+//
+//                // set_Tree(inputFile, right_node);
+//            }
+//            return; 
+//        }
+//
+//        //if leaf will set to a left leaf, if another leaf is there also sets as right leaf
+//        //if there is a branch instead of a right leaf, skips setting it and returns it to orignial position
+//        //as it will be returned to be set into right branch 
+//        if (line[0] == '(') {
+//            node->setLeft(left_node);
+//
+//            if (getline(inputFile, line) ){//&& line[0] == '(') {
+//                binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
+//                node->setRight(right_node);
+//
+//                if (line[0] == '[')
+//                    set_Tree(inputFile, right_node);
+//            }
+//
+//           // return;
+//        }
+//            
+//    }
+//}
+
+
+void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
     string line;
+
+    //only continues if file has a line, acts as a stop case
     if (getline(inputFile, line)) {
 
+        //puts line into a node
         binary_tree_node<string>* left_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
 
+        //if it is a branch, sets as left node first, then recurses to set the 
+        //following left branches
+        //when it returns it will set up the right branch if available
         if (line[0] == '[') {
-            prev_node->setLeft(left_node);
+            node->setLeft(left_node);
             set_Tree(inputFile, left_node);
-            if (getline(inputFile, line)) {
+            if (getline(inputFile, line) && node->getRight() == NULL) {
                 binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
-                prev_node->setRight(right_node);
-                set_Tree(inputFile, right_node);
+                node->setRight(right_node);
+
+                // set_Tree(inputFile, right_node);
             }
             return;
         }
 
+        //if leaf will set to a left leaf, if another leaf is there also sets as right leaf
+        //if there is a branch instead of a right leaf, skips setting it and returns it to orignial position
+        //as it will be returned to be set into right branch 
         if (line[0] == '(') {
-            prev_node->setLeft(left_node);
+            node->setLeft(left_node);
 
-            streampos start_current_line = inputFile.tellg();
-
-            if (getline(inputFile, line) && line[0] == '(') {
+            if (getline(inputFile, line)) {//&& line[0] == '(') {
                 binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
-                prev_node->setRight(right_node);
-            }
-            else
-                inputFile.seekg(start_current_line);
+                node->setRight(right_node);
 
-            return;
+                if (line[0] == '[')
+                    set_Tree(inputFile, right_node);
+            }
+
+            // return;
         }
-            
+
     }
 }
 
-void animalGuessedRecursion(binary_tree_node<string>* prev_node)
+//precondition: binary tree must have root
+//postcondition: traverses through binary tree and adds on or simply stops traversing 
+void animalGuessedRecursion(binary_tree_node<string>* node)
 {
-
-    if (prev_node->isLeaf()) 
+    //stop case
+    //if we are at the last option
+    if (node->isLeaf())
     {
-        cout << "\n\tMy guess is a " << prev_node->getData();
+        cout << "\n\tMy guess is a " << node->getData();
+        //if correct guess, else adds on to binary tree
         if(inputChar(" (Y - yes or N - no) ? ") == 'Y' )
             cout << "\n\tYes, I knew it all along!\n";
         else{
+            //gets player animal
             string input = inputString("\n\tI give up. What are you?\n\t", false);
 
-            cout << "\n\tPlease specify a yes / no question that will distinguish a(n) " << input << " from a(n) " << prev_node->getData() << ".";
+            //gets player question
+            cout << "\n\tPlease specify a yes / no question that will distinguish a(n) " << input << " from a(n) " << node->getData() << ".";
             string question = inputString("\n\tEnter your question that ends with a '?': ", true);
-            cout << "\n\tAs a(n) " << input << ", " << question;
+            
+            string left = "", right = ""; //to find where to place nodes
 
-            string left = "", right = "";
+            //is the animal at right (yes), or left (no)
+            cout << "\n\tAs a(n) " << input << ", " << question;
             if (inputChar(" (Y - yes or N - no) ") == 'Y') {
                 left = input;
-                right = prev_node->getData();
+                right = node->getData();
             }
             else {
                 right = input;
-                left = prev_node->getData();
+                left = node->getData();
             }
 
+            //makes node
             binary_tree_node<string>* left_node = new binary_tree_node<string>(left);
             binary_tree_node<string>* right_node = new binary_tree_node<string>(right);
 
-            prev_node->setData(question);
-            prev_node->setLeft(left_node);
-            prev_node->setRight(right_node);
+            //replaces this node with question, and sets its left and right animal
+            node->setData(question); 
+            node->setLeft(left_node);
+            node->setRight(right_node);
         }
-        return;
+        return; //stops it from going forward
     }
 
 
-    cout << "\n\t" << prev_node->getData();
+    //ask question
+    cout << "\n\t" << node->getData();
 
+    //if yes moves left, if no moves right
     if (inputChar("\n\t(Y-yes or N-no): ") == 'Y') 
-        prev_node = prev_node->getLeft();
+        node = node->getLeft();
     else 
-        prev_node = prev_node->getRight();
+        node = node->getRight();
 
 
-    animalGuessedRecursion(prev_node);
-    return;
+    animalGuessedRecursion(node); //recurses
   
+}
+
+//precondition: file to hold in node data, root of binary tree
+//postcondition: traverses and saves data into file (traverses left branches, 
+//left leaves, and right leaves first)
+void save_File(ofstream& outputFile, binary_tree_node<string>* node) {
+
+    //if a leaf, give () in string, else a branch give [] in string
+    if (node->isLeaf())
+        outputFile << "(" << node->getData() << ")\n";
+    else
+        outputFile << "[" << node->getData() << "]\n";
+
+    //start at left until it hits NULL (or last left leave)
+    // then returns to previous node's right leaf if available
+    if (node->getLeft() != NULL) {
+        save_File(outputFile, node->getLeft());
+        if (node->getRight() != NULL)
+            save_File(outputFile, node->getRight());
+    }
+
+    return;
+
 }
