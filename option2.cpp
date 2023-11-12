@@ -39,7 +39,7 @@ int mainMenu() {
 }
 
 char option2Menu() {
-	cout << "\n\t1> bTree container";
+	cout << "\n\t2> bTree container";
 	cout << "\n\t" << string(100, char(205));
 	cout << "\n\t\tA> Insert a node/leaf";
 	cout << "\n\t\tB> Remove a node/leaf";
