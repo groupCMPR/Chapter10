@@ -7,21 +7,21 @@
 
 //HEADER FILE
 #include "input.h"  //For input validation
-#include "binary_tree_node.cpp"
+#include "binary_tree_node.h"
 using namespace std;
 
 //PROTOTYPES
 int menuOption();
 
-//Option 1 - Tree of strings (Angie, Daniel)
+//Option 1 - Tree of strings
 void option1();
-//Option 2 - Tree container of integers (Alexis, John)
+//Option 2 - Tree container of integers
 void option2();
-//Option 3 - Animal Guessing Game (Vivian, Neidy)
+//Option 3 - Animal Guessing Game (Vivian)
 void option3();
-void beginning_tree(binary_tree_node<string>*& node, fstream& inputFile);
-void readFileAnimalGuesses(binary_tree_node<string>*& node, fstream& inputFile);
-//bool animalGuessedRecursion(char choice, string fileInput);
+void set_Tree(ifstream&, binary_tree_node<string>*);
+void animalGuessedRecursion(binary_tree_node<string>*);
+void save_File(ofstream&, binary_tree_node<string>*);
 
 //Precondition : N/A
 //Posctondition: Calls option 1, 2, and 3
@@ -60,70 +60,94 @@ int menuOption()
     return inputInteger("\n\t\tOption: ", 0, 3);
 }
 
-void menuOption1()
-{
-    cout << "\n\tA> Created root (trunk) with no leaf.\n";
-    cout << "\n\t\t\ttrunk\n";
-    cout << "\n\tB> Root (trunk) grows two branches: branch #1 and branch #2.";
-    cout << "\n\t\tA branch of (branch #1) grows left of the root.";
-    cout << "\n\t\tA branch of (branch #2) grows right of the root.\n";
-    cout << "\n\t\t\ttrunk";
-    cout << "\n\t\t\t" << char(195) << string(3, char(196)) << " branch #1";
-    cout << "\n\t\t\t" << char(192) << string(3, char(196)) << " branch #2";
-    cout << '\n';
-    cout << "\n\tC> Branches grows leaves.\n";
-    cout << "\n\t\tLeft branch of (branch #1) grows two leaves: leaf #1 and leaf #2.\n";
-    cout << "\n\t\t\ttrunk";
-    cout << "\n\t\t\t" << char(195) << string(3, char(196)) << " branch #1";
-    cout << "\n\t\t\t" << char(179) << "   " << char(195) << string(3, char(196)) << " leaf #1";
-    cout << "\n\t\t\t" << char(192) << string(3, char(196)) << " branch #2";
-    cout << "\n\t\t\t    " << char(192) << string(3, char(196)) << " leaf #2";
-    cout << '\n';
-    cout << "\n\t\tRight branch of (branch #2) grows two leaves: leaf #3 and leaf #4.";
-    cout << "\n\t\t\ttrunk";
-    cout << "\n\t\t\t" << char(195) << string(3, char(196)) << " branch #1";
-    cout << "\n\t\t\t" << char(179) << "   " << char(195) << string(3, char(196)) << " leaf #1";
-    cout << "\n\t\t\t" << char(192) << string(3, char(196)) << " branch #2";
-    cout << "\n\t\t\t    " << char(195) << string(3, char(196)) << " leaf #3";
-    cout << "\n\t\t\t    " << char(192) << string(3, char(196)) << " leaf #4";
-    cout << '\n';
-    cout << "\n\tD> Left leaf sprouts and yields a fruit (apple).\n";
-    cout << "\n\t\t\ttrunk";
-    cout << "\n\t\t\t" << char(195) << string(3, char(196)) << " branch #1";
-    cout << "\n\t\t\t" << char(179) << "   " << char(195) << string(3, char(196)) << " leaf #1";
-    cout << "\n\t\t\t" << char(179) << "   " << char(179) << "   " << char(195) << string(3, char(196)) << " apple";
-    cout << "\n\t\t\t" << char(192) << string(3, char(196)) << " branch #2";
-    cout << "\n\t\t\t    " << char(195) << string(3, char(196)) << " leaf #3";
-    cout << "\n\t\t\t    " << char(192) << string(3, char(196)) << " leaf #4";
-    cout << '\n';
-    cout << "\n\tE> Right leaf sprouts and yields two fruits (orange and coconut).\n";
-    cout << "\n\t\t\ttrunk";
-    cout << "\n\t\t\t" << char(195) << string(3, char(196)) << " branch #1";
-    cout << "\n\t\t\t" << char(179) << "   " << char(195) << string(3, char(196)) << " leaf #1";
-    cout << "\n\t\t\t" << char(179) << "   " << char(179) << "   " << char(195) << string(3, char(196)) << " apple";
-    cout << "\n\t\t\t" << char(192) << string(3, char(196)) << " branch #2";
-    cout << "\n\t\t\t    " << char(195) << string(3, char(196)) << " leaf #3";
-    cout << "\n\t\t\t    " << char(179) << "   " << char(195) << string(3, char(196)) << " orange";
-    cout << "\n\t\t\t    " << char(179) << "   " << char(192) << string(3, char(196)) << " coconut";
-    cout << "\n\t\t\t    " << char(192) << string(3, char(196)) << " leaf #4";
-    cout << '\n';
-    cout << "\n\tF> Delete tree.\n";
-    cout << "\n\t\tDeleting: apple";
-    cout << "\n\t\tDeleting: leaf #1";
-    cout << "\n\t\tDeleting: branch #1";
-    cout << "\n\t\tDeleting: orange";
-    cout << "\n\t\tDeleting: coconut";
-    cout << "\n\t\tDeleting: leaf #3";
-    cout << "\n\t\tDeleting: leaf #4";
-    cout << "\n\t\tDeleting: branch #2";
-    cout << "\n\t\tDeleting: trunk";
-    cout << '\n';
-}
 void option1()
 {
     cout << "\n\t1> Tree of strings";
     cout << "\n\t" << string(100, char(205));
-    menuOption1();
+
+
+    // create root node
+    binary_tree_node<string>* root = new binary_tree_node<string>;
+    root->setData("trunk");
+
+    cout << "\n\tA> Created root (" << root->getData() << ") with no leaf.\n";
+    cout << '\n';
+
+    // print initial tree structure
+    print_tree<string>("\t\t", root, false, true, true);
+
+    // grow two branches
+    binary_tree_node<string>* branch1 = new binary_tree_node<string>;
+    branch1->setData("branch #1");
+    binary_tree_node<string>* branch2 = new binary_tree_node<string>;
+    branch2->setData("branch #2");
+
+    cout << "\n\tB> Root (" << root->getData() << ") grows two branches: " << branch1->getData() << " and " << branch2->getData() << ".\n";
+    root->setLeft(branch1);
+    cout << "\t\tA branch of (" << root->getLeft()->getData() << ") grows left of the root.\n";
+    root->setRight(branch2);
+    cout << "\t\tA branch of (" << root->getRight()->getData() << ") grows right of the root.\n";
+
+    // print tree structure after growing branches
+    print_tree<string>("\t\t", root, false, true, true);
+
+    // branches grow leaves.
+    cout << "\n\tC> Branches grow leaves.";
+
+    //creating the initial tree
+    binary_tree_node<string>* leaf1 = new binary_tree_node<string>("leaf #1");
+    binary_tree_node<string>* leaf2 = new binary_tree_node<string>("leaf #2");
+    binary_tree_node<string>* leaf3 = new binary_tree_node<string>("leaf #3");
+    binary_tree_node<string>* leaf4 = new binary_tree_node<string>("leaf #4");
+
+    branch1->setLeft(leaf1);
+    branch2->setLeft(leaf2);
+
+    cout << "\n\t\tLeft branch of (branch #1) grows two leaves: leaf #1 and leaf #2.\n\n";
+    // print tree structure before deletion
+    print_tree<string>("\t\t", root, false, true, true);
+
+    // replace leaf2 with leaf3 in the right branch of branch #2
+    branch2->setLeft(leaf3);
+    branch2->setRight(leaf4);
+
+    // delete the old leaf2
+    delete leaf2;
+
+    cout << "\n\t\tRight branch of (branch #1) grows two leaves: leaf #1 and leaf #2.\n\n";
+    // print tree structure after deletion
+    print_tree<string>("\t\t", root, false, true, true);
+
+    // left leaf sprouts and yields a fruit
+    cout << "\n\tD>. Left leaf sprouts and yields a fruit (apple).\n";
+
+    binary_tree_node<string>* appleNode = new binary_tree_node<string>("apple");
+    leaf1->setLeft(appleNode);
+
+    // print tree structure after growing the apple on the left leaf
+    print_tree<string>("\t\t", root, false, true, true);
+
+    // right leaf sprouts and yields two fruits
+    cout << "\n\tE> Right leaf sprouts and yields two fruits (orange and coconut).\n";
+
+    binary_tree_node<string>* orangeNode = new binary_tree_node<string>("orange");
+    binary_tree_node<string>* coconutNode = new binary_tree_node<string>("coconut");
+
+    // assuming branch2 is the right branch and leaf3 is the left leaf
+    branch2->setLeft(new binary_tree_node<string>("leaf #3", orangeNode));
+
+    // set coconutNode as the right child of leaf3
+    orangeNode->setRight(coconutNode);
+
+    // set leaf4 as the right child of branch2
+    branch2->setRight(new binary_tree_node<string>("leaf #4"));
+
+    // print tree structure after growing orange and coconut on the right leaf
+    print_tree<string>("\t\t", root, false, false, true);
+
+    // delete tree
+    cout << "\n\tF> Delete tree.\n";
+    delete_tree<string>(root);
 }
 
 char menuOption2()
@@ -164,6 +188,12 @@ void option2()
 }
 
 
+/*----------------------------------------------------------------
+
+                    OPTION 3 - ANIMAL TAXONOMY BINARY TREE
+
+----------------------------------------------------------------*/
+
 char menuOption3()
 {
     cout << "\n\tWelcome to Animal Guessing Game";
@@ -176,29 +206,33 @@ char menuOption3()
 
     return inputChar("\n\t\tOption: ", static_cast<string>("0AB"));
 }
+
 void option3()
 {
-    binary_tree_node<string>* animalGuessGame;
-    char choice = 'N';
-    string animal = "";
-    string animalQuestion = "";
-    string vowelsString = "aeiouAEIOU";
-    bool vowels = false;
-    fstream inputFile;
+    string line = ""; //line to store first sentence
 
-    inputFile.open("animal.txt");
+    ifstream inputFile("animal.txt"); //open file
 
+    //error checks for failing open, empty file
     if (inputFile.fail())
     {
-        cout << "\n\tFile animal.txt cannot be found.\n";
+        cout << "\n\tERROR: File animal.txt cannot be found.\n";
         return;
     }
-    readFileAnimalGuesses(animalGuessGame, inputFile);
-    cout << "\n\t" << animalGuessGame->getData();
-    cout << "\n\t" << animalGuessGame->getLeft()->getData();
-    cout << "\n\t" << animalGuessGame->getRight()->getData();
-    print_tree<string>("\t\t", animalGuessGame, false, true, true);
+    if (inputFile.peek() == fstream::traits_type::eof()) {
+        cout << "\n\tERROR: File is empty";
+        return;
+    }
 
+    //get root using first line
+    getline(inputFile, line);
+    binary_tree_node<string>* root = new binary_tree_node<string>(line.substr(1, line.size() - 2));
+    binary_tree_node<string> animal_tree(*root);
+
+    //sets the file tree
+    set_Tree(inputFile, root);
+ 
+    inputFile.close();
 
     cout << "\n\t3> Animal Guessing Game";
     cout << "\n\t" << string(100, char(205));
@@ -215,287 +249,162 @@ void option3()
     cout << "\n\t\t\t\t\t   ( Eagle )     ( Penguin )\n";
     cout << "\n\tA learning version of twenty questions: one that not only plays the game, but learns new";
     cout << "\n\tobjects when it loses.\n";
+
     do
     {
         switch (menuOption3())
         {
+
         case '0': cout << "\n\tThank you for teaching AI a thing or two.\n"; return;
         case 'A':
         {
-            system("cls");
             cout << "\n\tThink of an animal and press the RETURN/ENTER key to begin...";
-            cin.clear();
-            cin.ignore(999, '\n');
-
-            //if (animalGuessedRecursion == 0) //True
-            //{
-            //    cout << "\n\tYes, I knew it all along!\n";
-            //    break;
-            //}
-            //else //Enter question
-            //{
-            //    cout << "\n\tI give up. What are you?";
-            //    animal = inputString("\n\t", true);
-
-            //    cout << "\n\tPlease specify a yes/no question that will distinguish a " << animal << " from a " << ".";
-
-            //    cout << "\n\tEnter your animal in a question format. Ex: Does it...? Is it...?";
-            //    animalQuestion = inputString("\n\t", true);
-
-            //    for (int i = 0; i < vowelsString.size(); i++)
-            //    {
-            //        if (animal[0] == vowelsString[i])
-            //        {
-            //            vowels = true;
-            //            break;
-            //        }
-            //    }
-
-            //    if (vowels == true)
-            //    {
-            //        cout << "\n\tAs an " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
-            //    }
-            //    else
-            //    {
-            //        cout << "\n\tAs a " << animal << ": " << animalQuestion << " (Y-yes or N-no) ";
-            //    }
-            //}
-
+            cin.get(); //for system pause
+            animalGuessedRecursion(root);
+            system("pause");
+            system("cls");
         }break;
         case 'B':
         {
+            ofstream outputFile("animal.txt");
+            save_File(outputFile, root);
+            outputFile.close();
             cout << "\n\tNew data file. animal.txt, has been saved.\n";
         }break;
         default: "\t\tERROR: - Invalid option. Please re-enter"; break;
         }
-        system("pause");
-        cout << "\n";
-        system("cls");
-
-        /*Think of an animal and press the RETURN/ENTER key to begin...
-
-
-               Is it a mammal? (Y-yes or N-no) y
-
-               Does it have stripes? (Y-yes or N-no) n
-
-               Does it have a pouch? (Y-yes or N-no) n
-
-               My guess is a lion (Y-yes or N-no)? n
-
-               ///
-
-               Yes, I knew it all along!
-
-               ///
-
-               I give up. What are you?
-               dolphin
-
-               Please specify a yes/no question that will distinguish a dolphin from a lion.
-
-               Enter your question that ends with a '?':
-               Does it have flippers?
-               As a dolphin, does it Does it have flippers? (Y-yes or N-no)
-
-               New data file. animal.txt, has been saved.
-   */
     } while (true);
+
+    delete_tree(root); //deletes tree 
 }
 
-void beginning_tree(binary_tree_node<string>*& node, fstream& inputFile)
-{
+//precondition: A full/complete binary tree set up in a text file (for best organization), the root node
+// NOTICE: Be aware of your () leaves as if there are two leaves under a branch, set_Tree will assume 
+// those two leaves belong to that branch - [] () ()
+// Also if you have one leaf and one branch under a branch, it will automatically assume the branch is also a leaf
+// [] () []
+//postcondition: sets up the file binary tree
+void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
     string line;
-    binary_tree_node<string>* left_child_ptr = new binary_tree_node<string>;
-    binary_tree_node<string>* right_child_ptr = new binary_tree_node<string>;
-    if (!inputFile.eof())
-    {
-        getline(inputFile, line);
-        node = new binary_tree_node<string>;
-        node->setData(line);
-        node->setLeft(left_child_ptr);
-        node->setRight(right_child_ptr);
+
+    //only continues if file has a line, acts as a stop case
+    if (getline(inputFile, line)) {
+
+        //puts line into a node
+        binary_tree_node<string>* left_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
+
+        //if it is a branch, sets as left node first, then recurses to set the 
+        //following left branches
+        //when it returns it will set up the right branch if available
+        if (line[0] == '[') {
+            node->setLeft(left_node);
+            set_Tree(inputFile, left_node);
+            if (getline(inputFile, line)) {
+                binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
+                node->setRight(right_node);
+
+                //if node is a branch, recurses to get leaves 
+                if(line[0] == '[')
+                  set_Tree(inputFile, right_node);
+            }
+            return;
+        }
+
+        //if leaf will set to a left leaf, if another leaf is there also sets as right leaf
+        //if there is a branch instead of a right leaf, skips setting it and returns it to orignial position
+        //as it will be returned to be set into right branch 
+        if (line[0] == '(') {
+            node->setLeft(left_node);
+
+            if (getline(inputFile, line)) {//&& line[0] == '(') {
+                binary_tree_node<string>* right_node = new binary_tree_node<string>(line.substr(1, line.size() - 2));
+                node->setRight(right_node);
+
+                //if node is a branch, recurses to get leaves 
+                if (line[0] == '[')
+                    set_Tree(inputFile, right_node);
+            }
+
+        }
+
     }
 }
 
-void readFileAnimalGuesses(binary_tree_node<string>*& node, fstream& inputFile)
+//precondition: binary tree must have root
+//postcondition: traverses through binary tree and adds on or simply stops traversing 
+void animalGuessedRecursion(binary_tree_node<string>* node)
 {
-    string line;
-    node = new binary_tree_node<string>;
-    binary_tree_node<string>* left_child_ptr = new binary_tree_node<string>;
-    binary_tree_node<string>* right_child_ptr = new binary_tree_node<string>;
-    bool root = true;
-
-    if (root = true)
+    //stop case
+    //if we are at the last option
+    if (node->isLeaf())
     {
-        beginning_tree(node, inputFile);
-        root = false;
-    }
-    if (!inputFile.eof())
-    {
-        getline(inputFile, line);
-        left_child_ptr->setData(line);
-        node->setLeft(left_child_ptr);
-        getline(inputFile, line);
-        right_child_ptr->setData(line);
-        node->setRight(right_child_ptr);
-        readFileAnimalGuesses(left_child_ptr, inputFile);
-        readFileAnimalGuesses(right_child_ptr, inputFile);
-  /*      getline(inputFile, line);
-        node->setData(line);
-        getline(inputFile, line);
-        left_child_ptr->setData(line);
-        node->setLeft(left_child_ptr);
-        getline(inputFile, line);
-        right_child_ptr->setData(line);
-        node->setRight(right_child_ptr);
-        readFileAnimalGuesses(left_child_ptr, inputFile);
-        readFileAnimalGuesses(right_child_ptr, inputFile);*/
-    }
+        cout << "\n\tMy guess is a " << node->getData();
+        //if correct guess, else adds on to binary tree
+        if(inputChar(" (Y - yes or N - no) ? ") == 'Y' )
+            cout << "\n\tYes, I knew it all along!\n";
+        else{
+            //gets player animal
+            string input = inputString("\n\tI give up. What are you?\n\t", true);
 
-    /*string line = "";
-    string questionOrAnswer = "";
-    int count = 0;
-    bool roots = true;
-    bool left_subtree_finished = false;
-    binary_tree_node<string>* root_ptr = new binary_tree_node<string>;
-    binary_tree_node<string>* left_child_ptr = new binary_tree_node<string>;
-    binary_tree_node<string>* right_child_ptr = new binary_tree_node<string>;
+            //gets player question
+            cout << "\n\tPlease specify a yes / no question that will distinguish a(n) " << input << " from a(n) " << node->getData() << ".";
+            string question = inputString("\n\tEnter your question that ends with a '?': ", true);
+            
+            string left = "", right = ""; //to find where to place nodes
 
-    if (!inputFile.eof())
-    {
-        getline(inputFile, line);
-        cin.clear();
-    }
-    else
-        return;
-
-    if (roots == true)
-    {
-        for (int i = 0; i < line.size(); i++)
-        {
-            if (line[i] == '[' || line[i] == ']')
-                continue;
-            questionOrAnswer += line[i];
-        }
-        root_ptr->setData(questionOrAnswer);
-        questionOrAnswer = "";
-        left_child_ptr->setData(NULL);
-        right_child_ptr->setData(NULL);
-        root_ptr->setLeft(left_child_ptr);
-        root_ptr->setRight(right_child_ptr);
-        roots = false;
-    }
-
-    if (!inputFile.eof())
-    {
-        getline(inputFile, line);
-        cin.clear();
-
-        if (line[0] == '[')
-        {
-            for (int i = 0; i < line.size(); i++)
-            {
-                if (line[i] == '[' || line[i] == ']')
-                    continue;
-                questionOrAnswer += line[i];
+            //is the animal at right (yes), or left (no)
+            cout << "\n\tAs a(n) " << input << ", " << question;
+            if (inputChar(" (Y - yes or N - no) ") == 'Y') {
+                left = input;
+                right = node->getData();
             }
-            left_child_ptr->setData(questionOrAnswer);
-            questionOrAnswer = "";
+            else {
+                right = input;
+                left = node->getData();
+            }
+
+            //makes node
+            binary_tree_node<string>* left_node = new binary_tree_node<string>(left);
+            binary_tree_node<string>* right_node = new binary_tree_node<string>(right);
+
+            //replaces this node with question, and sets its left and right animal
+            node->setData(question); 
+            node->setLeft(left_node);
+            node->setRight(right_node);
         }
+        return; //stops it from going forward
     }
-    else
-        return;*/
 
-        /*if (line[0] == '[')
-        {
-            node = new binary_tree_node<string>;
-            node->setData(line);
-            readFileAnimalGuesses(left_child_ptr, inputFile);
-        }
-        if (line[0] == '(')
-        {
-            node = new binary_tree_node<string>;
-            node->setData(line);
-            readFileAnimalGuesses(right_child_ptr, inputFile);
-        }*/
 
-        /*getline(inputFile, line);
+    //ask question
+    cout << "\n\t" << node->getData();
 
-        for (int i = 0; i < line.size(); i++)
-        {
-            if (line[i] == '[' || line[i] == ']')
-                continue;
-            questionOrAnswer += line[i];
-        }
-        root_ptr->setData(questionOrAnswer);
+    //if yes moves left, if no moves right
+    if (inputChar("\n\t(Y-yes or N-no): ") == 'Y') 
+        node = node->getLeft();
+    else 
+        node = node->getRight();
 
-        getline(inputFile, line);
-        if(!inputFile.eof())
-        {
-            if (line[0] == '[')
-            {
-                for (int i = 0; i < line.size(); i++)
-                {
-                    if (line[i] == '[' || line[i] == ']')
-                        continue;
-                    questionOrAnswer += line[i];
-                }
-                left_child_ptr->setData(line);
-                root_ptr->setLeft(left_child_ptr);
-                readFileAnimalGuesses(inputFile);
-            }
-            else if (line[0] == '(')
-            {
-                for (int i = 0; i < line.size(); i++)
-                {
-                    if (line[i] == '(' || line[i] == ')')
-                        continue;
-                    questionOrAnswer += line[i];
-                }
-                right_child_ptr->setData(line);
-                root_ptr->setLeft(right_child_ptr);
-                readFileAnimalGuesses(inputFile);
-            }
-        }*/
-
-        /*for (int i = 0; i < line.size(); i++)
-        {
-            if (line[i] == '[' || line[i] == ']')
-                continue;
-            questionOrAnswer += line[i];
-        }
-        root_ptr->setData(questionOrAnswer);
-        root_ptr->setLeft(NULL);
-        root_ptr->setRight(NULL);
-
-        while (!inputFile.eof())
-        {
-
-        }*/
-
-        //while (!inputFile.eof())
-        //{
-        //    getline(inputFile, line);
-
-        //    if (line[0] == '[')
-        //    {
-        //        for (int i = 0; i < line.size(); i++)
-        //        {
-        //            if (line[i] == '[' || line[i] == ']')
-        //                continue;
-        //            questionOrAnswer += line[i];
-        //        }
-        //        root_ptr->setData(questionOrAnswer);
-        //    }
-        //}
+    animalGuessedRecursion(node); //recurses
+  
 }
 
-//bool animalGuessedRecursion(char choice, string fileInput)
-//{
-//    if (!fileInput.empty())
-//    {
-//        choice = inputChar("\n\tIs it a mammal? (Y-yes or N-no) ", static_cast<string>("YN"));
-//        return true;
-//    }
-//}
+//precondition: file to hold in node data, root of binary tree
+//postcondition: traverses and saves data into file (traverses left branches, 
+//left leaves, and right leaves first)
+void save_File(ofstream& outputFile, binary_tree_node<string>* node) {
+
+    //if a leaf, give () in string, else a branch give [] in string
+    if (node->isLeaf())
+        outputFile << "(" << node->getData() << ")\n";
+    else
+        outputFile << "[" << node->getData() << "]\n";
+
+    //start at left until it hits NULL (or last left leave)
+    // then returns to previous node's right leaf if available
+    if (node->getLeft() != NULL) {
+        save_File(outputFile, node->getLeft());
+        if (node->getRight() != NULL)
+            save_File(outputFile, node->getRight());
+    }
+}
