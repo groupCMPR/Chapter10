@@ -160,3 +160,7 @@ void print_tree(const string& prefix, const binary_tree_node<Item>* node, bool i
         print_tree(prefix + (isLeft ? s : "    "), node->getRight(), false, false, true);
     }
 }
+
+template class binary_tree_node<std::string>;
+template void delete_tree(binary_tree_node<std::string>*);
+template void print_tree(const std::string&, const binary_tree_node<std::string>*, bool, bool, bool);
