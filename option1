@@ -3,6 +3,7 @@
 #include "binary_tree_node.h"
 using namespace std;
 
+
 int main()
 {
     // create root node
@@ -33,11 +34,12 @@ int main()
     // branches grow leaves.
     cout << "\n\tC> Branches grow leaves.";
 
-    //creating the initial tree
-    binary_tree_node<string>* leaf1 = new binary_tree_node<string>("leaf #1");
-    binary_tree_node<string>* leaf2 = new binary_tree_node<string>("leaf #2");
-    binary_tree_node<string>* leaf3 = new binary_tree_node<string>("leaf #3");
-    binary_tree_node<string>* leaf4 = new binary_tree_node<string>("leaf #4");
+    /// Creating the initial tree
+    binary_tree_node<string>* leaf1 = new binary_tree_node<string>("leaf #1", nullptr, nullptr);
+    binary_tree_node<string>* leaf2 = new binary_tree_node<string>("leaf #2", nullptr, nullptr);
+    binary_tree_node<string>* leaf3 = new binary_tree_node<string>("leaf #3", nullptr, nullptr);
+    binary_tree_node<string>* leaf4 = new binary_tree_node<string>("leaf #4", nullptr, nullptr);
+
 
     branch1->setLeft(leaf1);
     branch2->setLeft(leaf2);
@@ -58,15 +60,10 @@ int main()
     print_tree<string>("\t\t", root, false, true, true);
 
 
-
-
-
-
     // left leaf sprouts and yields a fruit
     cout << "\n\tD>. Left leaf sprouts and yields a fruit (apple).\n";
 
-    binary_tree_node<string>* appleNode = new binary_tree_node<string>("apple");
-    leaf1->setLeft(appleNode);
+    binary_tree_node<string>* appleNode = new binary_tree_node<string>("apple", nullptr, nullptr);    leaf1->setLeft(appleNode);
 
     // print tree structure after growing the apple on the left leaf
     print_tree<string>("\t\t", root, false, true, true);
@@ -74,24 +71,22 @@ int main()
     // right leaf sprouts and yields two fruits
     cout << "\n\tE> Right leaf sprouts and yields two fruits (orange and coconut).\n";
 
-    binary_tree_node<string>* orangeNode = new binary_tree_node<string>("orange");
-    binary_tree_node<string>* coconutNode = new binary_tree_node<string>("coconut");
+    binary_tree_node<string>* orangeNode = new binary_tree_node<string>("orange", nullptr, nullptr);
+
+
+    binary_tree_node<string>* coconutNode = new binary_tree_node<string>("coconut", nullptr, nullptr);
 
     // assuming branch2 is the right branch and leaf3 is the left leaf
-    branch2->setLeft(new binary_tree_node<string>("leaf #3", orangeNode));
+    branch2->setLeft(new binary_tree_node<string>("leaf #3", nullptr, orangeNode));
 
     // set coconutNode as the right child of leaf3
     orangeNode->setRight(coconutNode);
 
     // set leaf4 as the right child of branch2
-    branch2->setRight(new binary_tree_node<string>("leaf #4"));
+    branch2->setRight(new binary_tree_node<string>("leaf #4", nullptr, nullptr));
 
     // print tree structure after growing orange and coconut on the right leaf
-    print_tree<string>("\t\t", root, false, false, true);
-
-
-
-
+    print_tree<string>("\t\t", root, false, true, true);
 
 
     // delete tree
