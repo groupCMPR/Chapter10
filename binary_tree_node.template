@@ -4,7 +4,6 @@
 // documentation: Vivian
 // .template file split: Neidy
 
-#include "binary_tree_node.h"
 
 //---------------------------------------------------------------------
 //							CONSTRUCTORS
