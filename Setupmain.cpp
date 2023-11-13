@@ -5,16 +5,16 @@
 //Groups
 //Option 1 (tree of strings): Daniel
 //Option 2 (tree container of integers): Alexis
-//Option 3 (animal guessing game): Neidy and Vivian
+//Option 3 (animal guessing game): Neidy 
 //main.cpp: Vivian set up the main.cpp
 #include <iostream> //For cout
 #include <fstream>  //For files
-#include <string>
+#include <string>   //For string
 
 //HEADER FILE
-#include "input.h"  //For input validation
-#include "binary_tree_node.h"
-#include "bTree.h"
+#include "input.h"            //For input validation
+#include "binary_tree_node.h" //For option 1 & 3
+#include "bTree.h"            //For option 2
 
 using namespace std;
 
@@ -32,7 +32,7 @@ void animalGuessedRecursion(binary_tree_node<string>*);
 void save_File(ofstream&, binary_tree_node<string>*);
 
 //Precondition : N/A
-//Posctondition: Calls option 1, 2, and 3
+//Postcondition: Calls option 1, 2, and 3
 int main()
 {
     do
@@ -53,7 +53,7 @@ int main()
 }
 
 //Precondition : Calls from main
-//Posctondition: Returns integer choice
+//Postcondition: Returns integer choice
 int menuOption()
 {
     cout << "\n\tCMPR131 Chapter 10: Trees (Final Group 11)";
@@ -68,6 +68,13 @@ int menuOption()
     return inputInteger("\n\t\tOption: ", 0, 3);
 }
 
+/*----------------------------------------------------------------
+
+                    OPTION 1 - TREE OF STRINGS
+
+----------------------------------------------------------------*/
+//Precondition : Calls from main
+//Postcondition: Display the tree structure
 void option1()
 {
     // create root node
@@ -152,8 +159,9 @@ void option1()
     delete_tree<string>(root);
 }
 
-char option2Menu()
-{
+//Precondition : Calls from option 2
+//Postcondition: Displays menu and returns a char value 
+char option2Menu() {
     cout << "\n\t2> bTree container";
     cout << "\n\t" << string(100, char(205));
     cout << "\n\t\tA> Insert a node/leaf";
@@ -168,10 +176,18 @@ char option2Menu()
     cout << "\n\t\t0> return";
     cout << "\n\t" << string(100, char(205));
 
-    return inputChar("\n\t\tOption: ", static_cast<string>("0ABCDEFGH"));
+    return inputChar("\n\t\tOption: ", static_cast<string>("ABCDEFGH0"));
 }
-void option2()
-{
+
+/*----------------------------------------------------------------
+
+                    OPTION 2 - bTree CONTAINER
+
+----------------------------------------------------------------*/
+//Precondition : Calls from main
+//Postcondition: Allows the user to do multiple actions using a bTree
+void option2() {
+
     bTree<int> tree;
     int number;
     int remove;
@@ -189,12 +205,16 @@ void option2()
                 cout << "\n\t\tERROR - bTree is empty";
                 break;
             }
+
             remove = inputInteger("\n\t\tEnter a node/leaf to remove: ");
+
             if (tree.find(remove)) {
                 cout << "\n\t\t" << remove << " has been removed from bTree.";
                 tree.remove(remove);
             }
+
             else cout << "\n\t\t" << remove << " cannot be found.";
+
             break;
         case 'C':
             cout << "\n\t\tCount of Nodes = " << tree.count();
@@ -254,16 +274,15 @@ void option2()
         cout << "\n\n\t";
         system("pause");
     } while (true);
-
 }
-
 
 /*----------------------------------------------------------------
 
                     OPTION 3 - ANIMAL TAXONOMY BINARY TREE
 
 ----------------------------------------------------------------*/
-
+//Precondition : Calling from option 3
+//Postcondition: Returning char and outputting the menu
 char menuOption3()
 {
     cout << "\n\tWelcome to Animal Guessing Game";
@@ -276,7 +295,8 @@ char menuOption3()
 
     return inputChar("\n\t\tOption: ", static_cast<string>("0AB"));
 }
-
+//Precondition : Calling from main 
+//Postcondition: Output an animal guessing game
 void option3()
 {
     string line = ""; //line to store first sentence
@@ -301,7 +321,7 @@ void option3()
 
     //sets the file tree
     set_Tree(inputFile, root);
- 
+
     inputFile.close();
 
     cout << "\n\t3> Animal Guessing Game";
@@ -325,7 +345,7 @@ void option3()
         switch (menuOption3())
         {
 
-        case '0': cout << "\n\tThank you for teaching AI a thing or two.\n"; return;
+        case '0': cout << "\n\tThank you for teaching AI a thing or two.\n"; delete_tree(root); return;
         case 'A':
         {
             cout << "\n\tThink of an animal and press the RETURN/ENTER key to begin...";
@@ -344,16 +364,14 @@ void option3()
         default: "\t\tERROR: - Invalid option. Please re-enter"; break;
         }
     } while (true);
-
-    delete_tree(root); //deletes tree 
 }
 
-//precondition: A full/complete binary tree set up in a text file (for best organization), the root node
+//Precondition : A full/complete binary tree set up in a text file (for best organization), the root node
 // NOTICE: Be aware of your () leaves as if there are two leaves under a branch, set_Tree will assume 
 // those two leaves belong to that branch - [] () ()
 // Also if you have one leaf and one branch under a branch, it will automatically assume the branch is also a leaf
 // [] () []
-//postcondition: sets up the file binary tree
+//Postcondition: Sets up the file binary tree
 void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
     string line;
 
@@ -374,8 +392,8 @@ void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
                 node->setRight(right_node);
 
                 //if node is a branch, recurses to get leaves 
-                if(line[0] == '[')
-                  set_Tree(inputFile, right_node);
+                if (line[0] == '[')
+                    set_Tree(inputFile, right_node);
             }
             return;
         }
@@ -400,8 +418,8 @@ void set_Tree(ifstream& inputFile, binary_tree_node<string>* node) {
     }
 }
 
-//precondition: binary tree must have root
-//postcondition: traverses through binary tree and adds on or simply stops traversing 
+//Precondition : Binary tree must have root
+//Postcondition: Traverses through binary tree and adds on or simply stops traversing 
 void animalGuessedRecursion(binary_tree_node<string>* node)
 {
     //stop case
@@ -410,16 +428,16 @@ void animalGuessedRecursion(binary_tree_node<string>* node)
     {
         cout << "\n\tMy guess is a " << node->getData();
         //if correct guess, else adds on to binary tree
-        if(inputChar(" (Y - yes or N - no) ? ") == 'Y' )
+        if (inputChar(" (Y - yes or N - no) ? ") == 'Y')
             cout << "\n\tYes, I knew it all along!\n";
-        else{
+        else {
             //gets player animal
             string input = inputString("\n\tI give up. What are you?\n\t", true);
 
             //gets player question
             cout << "\n\tPlease specify a yes / no question that will distinguish a(n) " << input << " from a(n) " << node->getData() << ".";
             string question = inputString("\n\tEnter your question that ends with a '?': ", true);
-            
+
             string left = "", right = ""; //to find where to place nodes
 
             //is the animal at right (yes), or left (no)
@@ -438,29 +456,27 @@ void animalGuessedRecursion(binary_tree_node<string>* node)
             binary_tree_node<string>* right_node = new binary_tree_node<string>(right, nullptr, nullptr);
 
             //replaces this node with question, and sets its left and right animal
-            node->setData(question); 
+            node->setData(question);
             node->setLeft(left_node);
             node->setRight(right_node);
         }
         return; //stops it from going forward
     }
 
-
     //ask question
     cout << "\n\t" << node->getData();
 
     //if yes moves left, if no moves right
-    if (inputChar("\n\t(Y-yes or N-no): ") == 'Y') 
+    if (inputChar("\n\t(Y-yes or N-no): ") == 'Y')
         node = node->getLeft();
-    else 
+    else
         node = node->getRight();
 
     animalGuessedRecursion(node); //recurses
-  
 }
 
-//precondition: file to hold in node data, root of binary tree
-//postcondition: traverses and saves data into file (traverses left branches, 
+//Precondition : File to hold in node data, root of binary tree
+//Postcondition: Traverses and saves data into file (traverses left branches, 
 //left leaves, and right leaves first)
 void save_File(ofstream& outputFile, binary_tree_node<string>* node) {
 
