@@ -2,21 +2,14 @@
 // Date: 11-3-2021
 // Description: cpp file for binary tree node for growing a tree
 // documentation: Vivian
+// .template file split: Neidy
 
 #include "binary_tree_node.h"
 
 //---------------------------------------------------------------------
 //							CONSTRUCTORS
 //---------------------------------------------------------------------
-//Precondition : N/A
-//Postcondition: Initialize the private members
-template <class Item>
-binary_tree_node<Item>::binary_tree_node()
-{
-    const Item& init_data = Item();
-    binary_tree_node* init_left = NULL;
-    binary_tree_node* init_right = NULL;
-}
+
 //Precondition : Passing in the private members
 //Postcondition: Change the private members
 template <class Item>
@@ -161,6 +154,3 @@ void print_tree(const string& prefix, const binary_tree_node<Item>* node, bool i
     }
 }
 
-template class binary_tree_node<std::string>;
-template void delete_tree(binary_tree_node<std::string>*);
-template void print_tree(const std::string&, const binary_tree_node<std::string>*, bool, bool, bool);
