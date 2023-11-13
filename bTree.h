@@ -4,7 +4,7 @@
 
 #ifndef B_TREE_H
 #define B_TREE_H
-#include <iostream>
+#include <iostream> //For cout
 using namespace std;
 
 template<typename T>
