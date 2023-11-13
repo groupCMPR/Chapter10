@@ -1,66 +1,71 @@
+// Name: Alexis Martinez
+// Date: 11/10/2023
+// Description: cpp file for class bTree
+//splitting into a template file: Neidy
+
 //default constuctor
 template<typename T>
 bTree<T>::bTree() {
     root = nullptr;
 }
-//PreCondition: None
-//PostCondition: Returns true or false
+//Precondition : None
+//Postcondition: Returns true or false
 template<typename T>
 bool bTree<T>::isEmpty() const {
     return root == nullptr;
 }
 
-//PreCondition: Requires a valid data type
-//PostCondition: Inserts that data into the bTree
+//Precondition : Requires a valid data type
+//Postcondition: Inserts that data into the bTree
 template<typename T>
 void bTree<T>::insert(T data) {
     root = insertNode(root, data);
 }
-//PreCondition: Requires a valid data type 
-//PostCondition: removes a node/leaf from bTree
+//Precondition : Requires a valid data type 
+//Postcondition: removes a node/leaf from bTree
 template<typename T>
 void bTree<T>::remove(T data) {
     root = deleteNode(root, data);
 }
-//PreCondition: None
-//PostCondition: Returns the count of the nodes in the bTree
+//Precondition : None
+//Postcondition: Returns the count of the nodes in the bTree
 template<typename T>
 int bTree<T>::count() {
     return countNodes(root);
 }
-//PreCondition: Requires a valid data type 
-//PostCondition: Finds that valid data type in the bTree
+//Precondition : Requires a valid data type 
+//Postcondition: Finds that valid data type in the bTree
 template<typename T>
 bool bTree<T>::find(T data) {
     return search(root, data) != nullptr;
 }
-//PreCondition: None
-//PostCondition: Posts in PreOrder
+//Precondition : None
+//Postcondition: Posts in PreOrder
 template<typename T>
 void bTree<T>::preOrder() {
     preOrderTraversal(root);
 }
-//PreCondition: None
-//PostCondition: Posts in inOrder 
+//Precondition : None
+//Postcondition: Posts in inOrder 
 template<typename T>
 void bTree<T>::inOrder() {
     inOrderTraversal(root);
 }
-//PreCondition: None
-//PostCondition: Posts in PostOrder
+//Precondition : None
+//Postcondition: Posts in PostOrder
 template<typename T>
 void bTree<T>::postOrder() {
     postOrderTraversal(root);
 }
-//PreCondition: None 
-//PostCondition: Deletes the binary tree
+//Precondition : None 
+//Postcondition: Deletes the binary tree
 template<typename T>
 void bTree<T>::deleteTree() {
     eraseTree(root);
     root = nullptr;
 }
-//PreCondition: Requires a pointer to a node and a valid data type 
-//PostCondition: inserts a Node into the bTree
+//Precondition : Requires a pointer to a node and a valid data type 
+//Postcondition: inserts a Node into the bTree
 template<typename T>
 typename bTree<T>::Node* bTree<T>::insertNode(Node* root, T data) {
     if (root == nullptr) {
@@ -76,8 +81,8 @@ typename bTree<T>::Node* bTree<T>::insertNode(Node* root, T data) {
 
     return root;
 }
-//PreCondition: Requires a pointer to a node
-//PostCondition: finds the min value node
+//Precondition : Requires a pointer to a node
+//Postcondition: finds the min value node
 template<typename T>
 typename bTree<T>::Node* bTree<T>::findMin(Node* node) {
     Node* current = node;
@@ -86,8 +91,8 @@ typename bTree<T>::Node* bTree<T>::findMin(Node* node) {
     }
     return current;
 }
-//PreCondition: Requires a pointer to a node and a valid data type
-//PostCondition: Deletes a node in the bTree
+//Precondition : Requires a pointer to a node and a valid data type
+//Postcondition: Deletes a node in the bTree
 template<typename T>
 typename bTree<T>::Node* bTree<T>::deleteNode(Node* root, T data) {
     if (root == nullptr)
@@ -122,8 +127,8 @@ typename bTree<T>::Node* bTree<T>::deleteNode(Node* root, T data) {
     }
     return root;
 }
-//PreCondition: Requires a pointer to a node 
-//PostCondition: Returns the count of the nodes in the bTree
+//Precondition : Requires a pointer to a node 
+//Postcondition: Returns the count of the nodes in the bTree
 template<typename T>
 int bTree<T>::countNodes(Node* root) {
     if (root == nullptr) {
@@ -131,8 +136,8 @@ int bTree<T>::countNodes(Node* root) {
     }
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
-//PreCondition: Requires a pointer to a node and a valid data type 
-//PostCondition: searches the bTree and returns that value 
+//Precondition : Requires a pointer to a node and a valid data type 
+//Postcondition: searches the bTree and returns that value 
 template<typename T>
 typename bTree<T>::Node* bTree<T>::search(Node* root, T data) {
     if (root == nullptr || root->data == data) {
@@ -146,8 +151,8 @@ typename bTree<T>::Node* bTree<T>::search(Node* root, T data) {
         return search(root->right, data);
     }
 }
-//PreCondition: requires a pointer to a node 
-//PostCondition: posts the tree content in preOrder
+//Precondition : requires a pointer to a node 
+//Postcondition: posts the tree content in preOrder
 template<typename T>
 void bTree<T>::preOrderTraversal(Node* root) {
     if (root != nullptr) {
@@ -156,8 +161,8 @@ void bTree<T>::preOrderTraversal(Node* root) {
         preOrderTraversal(root->right);
     }
 }
-//PreCondition: Requires to a pointer to a node 
-//PostCondition: posts the tree content in inorder 
+//Precondition : Requires to a pointer to a node 
+//Postcondition: posts the tree content in inorder 
 template<typename T>
 void bTree<T>::inOrderTraversal(Node* root) {
     if (root != nullptr) {
@@ -166,8 +171,8 @@ void bTree<T>::inOrderTraversal(Node* root) {
         inOrderTraversal(root->right);
     }
 }
-//PreCondition: Requires a pointer to node
-//PostCondition: posts the tree content in postOrder 
+//Precondition : Requires a pointer to node
+//Postcondition: posts the tree content in postOrder 
 template<typename T>
 void bTree<T>::postOrderTraversal(Node* root) {
     if (root != nullptr) {
@@ -176,8 +181,8 @@ void bTree<T>::postOrderTraversal(Node* root) {
         cout << "\t\t" << root->data << "\n";
     }
 }
-//PreCondition: Requires a pointer to a node
-//PostCondition: deletes the bTree
+//Precondition : Requires a pointer to a node
+//Postcondition: deletes the bTree
 template<typename T>
 void bTree<T>::eraseTree(Node* root) {
     if (root != nullptr) {
