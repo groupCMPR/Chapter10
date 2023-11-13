@@ -1,4 +1,5 @@
-#pragma once
+#ifndef B_TREE_H
+#define B_TREE_H
 #include <iostream>
 using namespace std;
 
@@ -30,163 +31,54 @@ private:
 
 public:
 
-    bTree() {
-        root = nullptr;
-    }
+    bTree();
 
-    bool isEmpty() const {
-        return root == nullptr;
-    }
+    bool isEmpty() const;
 
-    void insert(T data) {
-        root = insertNode(root, data);
-    }
+    void insert(T data);
 
-    void remove(T data) {
-        root = deleteNode(root, data);
-    }
+    void remove(T data);
 
-    int count() {
-        return countNodes(root);
-    }
+    int count();
 
-    bool find(T data) {
-        return search(root, data) != nullptr;
-    }
+    bool find(T data);
 
-    void preOrder() {
-        preOrderTraversal(root);
-    }
+    void preOrder();
 
-    void inOrder() {
-        inOrderTraversal(root);
-    }
+    void inOrder();
 
-    void postOrder() {
-        postOrderTraversal(root);
-    }
+    void postOrder();
 
-    void deleteTree() {
-        eraseTree(root);
-        root = nullptr;
-    }
+    void deleteTree();
 };
 
-template<typename T>
-typename bTree<T>::Node* bTree<T>::insertNode(Node* root, T data) {
-    if (root == nullptr) {
-        return new Node(data);
-    }
-
-    if (data < root->data) {
-        root->left = insertNode(root->left, data);
-    }
-    else if (data > root->data || data == root->data) {
-        root->right = insertNode(root->right, data);
-    }
-
-    return root;
-}
+#include "bTree.template"
+#endif
 
 template<typename T>
-typename bTree<T>::Node* bTree<T>::findMin(Node* node) {
-    Node* current = node;
-    while (current && current->left != nullptr) {
-        current = current->left;
-    }
-    return current;
-}
+typename bTree<T>::Node* bTree<T>::insertNode(Node* root, T data);
+
+template<typename T>
+typename bTree<T>::Node* bTree<T>::findMin(Node* node);
 
 
 template<typename T>
-typename bTree<T>::Node* bTree<T>::deleteNode(Node* root, T data) {
-    if (root == nullptr) 
-        return root;
-
-    if (data < root->data) {
-        root->left = deleteNode(root->left, data);
-    }
-    else if (data > root->data) {
-        root->right = deleteNode(root->right, data);
-    }
-    else {
-        if (root->left != nullptr && root->right != nullptr) {
-            
-            Node* succ = findMin(root->right);
-            root->data = succ->data;
-            root->right = deleteNode(root->right, succ->data);
-        }
-        else {
-            Node* temp = root->left ? root->left : root->right;
-
-            if (temp == nullptr) {
-                temp = root;
-                root = nullptr;
-            }
-            else {
-                *root = *temp;
-            }
-
-            delete temp;
-        }
-    }
-    return root;
-}
+typename bTree<T>::Node* bTree<T>::deleteNode(Node* root, T data);
 
 template<typename T>
-int bTree<T>::countNodes(Node* root) {
-    if (root == nullptr) {
-        return 0;
-    }
-    return 1 + countNodes(root->left) + countNodes(root->right);
-}
+int bTree<T>::countNodes(Node* root);
 
 template<typename T>
-typename bTree<T>::Node* bTree<T>::search(Node* root, T data) {
-    if (root == nullptr || root->data == data) {
-        return root;
-    }
-
-    if (data < root->data) {
-        return search(root->left, data);
-    }
-    else {
-        return search(root->right, data);
-    }
-}
+typename bTree<T>::Node* bTree<T>::search(Node* root, T data);
 
 template<typename T>
-void bTree<T>::preOrderTraversal(Node* root) {
-    if (root != nullptr) {
-        cout << "\t\t" << root->data << "\n";
-        preOrderTraversal(root->left);
-        preOrderTraversal(root->right);
-    }
-}
+void bTree<T>::preOrderTraversal(Node* root);
 
 template<typename T>
-void bTree<T>::inOrderTraversal(Node* root) {
-    if (root != nullptr) {
-        inOrderTraversal(root->left);
-        cout << "\t\t" << root->data << "\n";
-        inOrderTraversal(root->right);
-    }
-}
+void bTree<T>::inOrderTraversal(Node* root);
 
 template<typename T>
-void bTree<T>::postOrderTraversal(Node* root) {
-    if (root != nullptr) {
-        postOrderTraversal(root->left);
-        postOrderTraversal(root->right);
-        cout << "\t\t" << root->data << "\n";
-    }
-}
+void bTree<T>::postOrderTraversal(Node* root);
 
 template<typename T>
-void bTree<T>::eraseTree(Node* root) {
-    if (root != nullptr) {
-        eraseTree(root->left);
-        eraseTree(root->right);
-        delete root;
-    }
-}
+void bTree<T>::eraseTree(Node* root);
