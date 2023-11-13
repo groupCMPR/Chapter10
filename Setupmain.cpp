@@ -25,7 +25,7 @@ int menuOption();
 void option1();
 //Option 2 - Tree container of integers
 void option2();
-//Option 3 - Animal Guessing Game (Vivian)
+//Option 3 - Animal Guessing Game
 void option3();
 void set_Tree(ifstream&, binary_tree_node<string>*);
 void animalGuessedRecursion(binary_tree_node<string>*);
