@@ -6,6 +6,7 @@ using namespace std;
 template<typename T>
 class bTree {
 private:
+    //Node 
     struct Node {
         T data;
         Node* left;
@@ -17,8 +18,9 @@ private:
             right = nullptr;
         }
     };
-
+    // node pointer
     Node* root;
+    //private functions
     Node* insertNode(Node* root, T data);
     Node* deleteNode(Node* root, T data);
     Node* findMin(Node* node);
@@ -30,9 +32,9 @@ private:
     void eraseTree(Node* root);
 
 public:
-
+    //default constructor
     bTree();
-
+    //fucntions
     bool isEmpty() const;
 
     void insert(T data);
@@ -54,7 +56,7 @@ public:
 
 #include "bTree.template"
 #endif
-
+//private functions 
 template<typename T>
 typename bTree<T>::Node* bTree<T>::insertNode(Node* root, T data);
 
