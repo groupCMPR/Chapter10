@@ -1,11 +1,9 @@
 #include <iostream>
 #include "input.h"
 #include "bTree.h"
-
 using namespace std;
 
 int mainMenu();
-
 void option2();
 
 int main() {
@@ -25,6 +23,8 @@ int main() {
 	return EXIT_SUCCESS;
 }
 
+//PreCondition: None
+//PostCondition: displays a menu and returns an integer value
 int mainMenu() {
 	cout << "\n\tCMPR131 Chapter 10: Trees";
 	cout << "\n\t" << string(100, char(205));
@@ -38,6 +38,8 @@ int mainMenu() {
 	return inputInteger("\n\t\tOption: ", 0, 3);
 }
 
+//PreCondition: None
+//PostCondition: Displays menu and returns a char value 
 char option2Menu() {
 	cout << "\n\t2> bTree container";
 	cout << "\n\t" << string(100, char(205));
@@ -56,6 +58,8 @@ char option2Menu() {
 	return inputChar("\n\t\tOption: ", static_cast<string>("ABCDEFGH0"));
 }
 
+//PreCondition: None
+//PostCondition: Allows the user to do multiple actions using a bTree
 void option2() {
 	
 	bTree<int> tree;
@@ -75,12 +79,16 @@ void option2() {
 				cout << "\n\t\tERROR - bTree is empty";
 				break;
 			}
+
 			remove = inputInteger("\n\t\tEnter a node/leaf to remove: ");
+
 			if (tree.find(remove)) {
 				cout << "\n\t\t" << remove << " has been removed from bTree.";
 				tree.remove(remove);
 			}
+
 			else cout << "\n\t\t" << remove << " cannot be found.";
+
 			break;
 		case 'C': 
 			cout << "\n\t\tCount of Nodes = " << tree.count();
@@ -140,9 +148,6 @@ void option2() {
 		cout << "\n\n\t";
 		system("pause");
 	} while (true);
-
-
-	
 }
 
 
