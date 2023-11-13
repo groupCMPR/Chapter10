@@ -5,8 +5,8 @@
 
 #ifndef BINARY_TREE_NODE_H
 #define BINARY_TREE_NODE_H
-#include <iostream>
-#include <string>
+#include <iostream> //For cout
+#include <string>   //For string
 
 using namespace std;
 
@@ -45,6 +45,3 @@ void delete_tree(binary_tree_node<Item>* leaf);
 
 template<class Item>
 void print_tree(const string& prefix, const binary_tree_node<Item>* node, bool isLeft, bool root, bool last);
-
-
-
