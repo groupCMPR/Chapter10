@@ -1,3 +1,7 @@
+// Name: Alexis Martinez
+// Date: 11/10/2023
+// Description: Header file for class bTree
+
 #ifndef B_TREE_H
 #define B_TREE_H
 #include <iostream>
