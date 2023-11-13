@@ -3,10 +3,11 @@
 // Description: binary tree node for growing a tree
 // documentation: Vivian
 
-#pragma once
-
+#ifndef BINARY_TREE_NODE_H
+#define BINARY_TREE_NODE_H
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 template <class Item>
@@ -20,7 +21,6 @@ private:
 public:
 
     //constructor
-    binary_tree_node(); //default
     binary_tree_node(const Item&, binary_tree_node*, binary_tree_node*); //argument
 
     //accessors
@@ -38,8 +38,13 @@ public:
     void setRight(binary_tree_node* new_right);
 };
 
+#include "binary_tree_node.template"
+#endif
 template<class Item>
 void delete_tree(binary_tree_node<Item>* leaf);
 
 template<class Item>
 void print_tree(const string& prefix, const binary_tree_node<Item>* node, bool isLeft, bool root, bool last);
+
+
+
