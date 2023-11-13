@@ -4,7 +4,6 @@
 // documentation: Vivian
 // .template file split: Neidy
 
-
 //---------------------------------------------------------------------
 //							CONSTRUCTORS
 //---------------------------------------------------------------------
@@ -152,4 +151,3 @@ void print_tree(const string& prefix, const binary_tree_node<Item>* node, bool i
         print_tree(prefix + (isLeft ? s : "    "), node->getRight(), false, false, true);
     }
 }
-
