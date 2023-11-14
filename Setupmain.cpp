@@ -2,11 +2,11 @@
 //Date: 11/5/2023
 //Description: Chapter 10 Assignment - Trees
 
-//Groups
+//Groups 
 //Option 1 (tree of strings): Daniel
 //Option 2 (tree container of integers): Alexis
 //Option 3 (animal guessing game): Neidy 
-//main.cpp: Vivian set up the main.cpp
+//main.cpp: Vivian set up the main.cpp, organization, documentation, and testing
 #include <iostream> //For cout
 #include <fstream>  //For files
 #include <string>   //For string
@@ -195,7 +195,7 @@ void option2() {
     do {
         system("cls");
         switch (option2Menu()) {
-        case '0': return;
+        case '0': tree.deleteTree(); return;
         case 'A':
             number = inputInteger("\n\t\tEnter an integer: ");
             tree.insert(number);
@@ -250,7 +250,7 @@ void option2() {
                 break;
             }
 
-            cout << "\n\t\tIn-order traveral of bTree with " << tree.count() << " nodes:\n";
+            cout << "\n\t\tIn-order traversal of bTree with " << tree.count() << " nodes:\n";
             tree.inOrder();
             break;
         case 'G':
@@ -259,7 +259,7 @@ void option2() {
                 break;
             }
 
-            cout << "\n\t\tPost-order traveral of bTree with " << tree.count() << " nodes:\n";
+            cout << "\n\t\tPost-order traversal of bTree with " << tree.count() << " nodes:\n";
             tree.postOrder();
             break;
         case 'H':
@@ -317,7 +317,6 @@ void option3()
     //get root using first line
     getline(inputFile, line);
     binary_tree_node<string>* root = new binary_tree_node<string>(line.substr(1, line.size() - 2), nullptr, nullptr);
-    binary_tree_node<string> animal_tree(*root);
 
     //sets the file tree
     set_Tree(inputFile, root);
